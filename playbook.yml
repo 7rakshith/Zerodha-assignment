@@ -2,11 +2,28 @@
 - hosts: all
   sudo: true
   tasks:
-    - name: update apt cache
-      apt: update_cache=yes
-    - name: install apache
-      apt: name=apache2 state=present
-    - name: install mysql
-      apt: name=mysql-server state=present
-    - name: install php
-      apt: name=php5 state=present
+    - name: Add the user 'testuser'
+    user:
+      name: testuser
+    - name: set timezone to Asia/Kolkata
+    timezone:
+      name: Asia/Kolkata
+    - name: Copy random file
+    copy:
+      src: /home/somefile.txt
+      dest: /home/testuser/
+    - name: Install Python
+      raw: apt -y update && apt install -y python-minimal
+      when: check_python.rc != 0
+    - name: Install Supervisor
+    apt:
+      name: supervisor
+#      state: present
+# Below are steps to install consul
+    get_url:
+      url: https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip
+      dest: /usr/local/bin
+    - name: Unarchive consul file
+    unarchive:
+      src: /usr/local/bin/consul_1.6.1_linux_amd64.zip
+      dest: /usr/local/bin
