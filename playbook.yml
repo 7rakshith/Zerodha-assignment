@@ -20,6 +20,7 @@
       name: supervisor
 #      state: present
 # Below are steps to install consul
+    - name: Download consul latest version
     get_url:
       url: https://releases.hashicorp.com/consul/1.6.1/consul_1.6.1_linux_amd64.zip
       dest: /usr/local/bin
