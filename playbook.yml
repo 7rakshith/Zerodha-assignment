@@ -1,0 +1,38 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+    - name: Add the user 'testuser'
+      user:
+        name: testuser
+    - name: set timezone to Asia/Kolkata
+      timezone:
+        name: Asia/Kolkata
+    - name: Copy random file
+      copy:
+        src: /root/ubuntu/consul_1.6.1_linux_amd64.zip
+        dest: /home/testuser/
+    - name: Install Python
+      apt:
+        name: python3
+    - name: Install Unzip
+      apt:
+        name: unzip
+    # Below are steps to install consul
+    - name: Unarchive consul file
+      unarchive:
+        src: /root/ubuntu/consul_1.6.1_linux_amd64.zip
+        dest: /usr/local/bin
+#    - name: Install Supervisor
+#      apt:
+#        name: supervisor
+#    - name: Download Supervisor
+#      get_url:
+#        url: https://files.pythonhosted.org/packages/de/87/ee1ad8fa533a4b5f2c7623f4a2b585d3c1947af7bed8e65bc7772274320e/supervisor-4.1.0.tar.gz
+#        dest: /opt
+#    - name: Unarchive Supervisor file
+#      unarchive:
+#        src: /root/ubuntu/supervisor-4.1.0.tar.gz
+#        dest: /usr
+#    - name: run my script
+#      command: /usr/supervisor-4.1.0/setup.py install
